@@ -1,0 +1,42 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  EXENAMEP1: send.exe
+  EXENAMEP2: receive.exe
+
+tasks:
+  build-send:
+    cmds:
+      - go build -o ./send/bin/{{.EXENAMEP1}} send/main.go
+    silent: true
+
+  run-send:
+    deps: [build-send]
+    cmds:
+      - ./send/bin/{{.EXENAMEP1}}
+    silent: true
+
+  compose-up:
+    cmds:
+      - docker compose up -d # -d == silent compose
+
+  compose-down:
+    cmds:
+      - docker compose down
+
+  build-receive:
+    cmds:
+      - go build -o ./receive/bin/{{.EXENAMEP2}} receive/main.go
+    silent: true
+
+  run-receive:
+    deps: [build-receive]
+    cmds:
+      - ./receive/bin/{{.EXENAMEP2}}
+    silent: true
+
+  build-receiver-dockerfile:
+    cmds:
+      - docker build -f receive.Dockerfile --tag docker-rabbitmq-receiver .

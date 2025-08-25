@@ -1,0 +1,31 @@
+services:
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    hostname: "rabbit-mq-management-1"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      - "5000:5673"
+    volumes:
+      - 'rabbitmq_data:/var/lib/rabbitmq/mnesia/'
+    networks:
+      - backend
+    restart: always
+
+  rabbit-receiver:
+    image: "docker-rabbitmq-receiver"
+    build:
+      context: .
+      dockerfile: receive.Dockerfile
+    restart: always
+    networks:
+      - backend
+    depends_on:
+      - rabbitmq
+
+volumes:
+  rabbitmq_data:
+
+networks:
+  backend:
+    driver: bridge
