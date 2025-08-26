@@ -1,0 +1,4 @@
+.env
+
+producer/bin/*
+consumer/bin/*

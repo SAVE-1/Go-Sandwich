@@ -12,16 +12,18 @@ services:
       - backend
     restart: always
 
-  rabbit-receiver:
-    image: "docker-rabbitmq-receiver"
+  rabbit-consumer:
+    image: "docker-rabbitmq-consumer"
     build:
       context: .
-      dockerfile: receive.Dockerfile
+      dockerfile: consumer.Dockerfile
     restart: always
     networks:
       - backend
     depends_on:
       - rabbitmq
+    environment:
+      RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672/"
 
 volumes:
   rabbitmq_data:

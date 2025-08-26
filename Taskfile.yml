@@ -3,19 +3,19 @@
 version: '3'
 
 vars:
-  EXENAMEP1: send.exe
-  EXENAMEP2: receive.exe
+  EXENAMEP1: producer.exe
+  EXENAMEP2: consumer.exe
 
 tasks:
-  build-send:
+  build-producer:
     cmds:
-      - go build -o ./send/bin/{{.EXENAMEP1}} send/main.go
+      - go build -o ./producer/bin/{{.EXENAMEP1}} producer/main.go
     silent: true
 
-  run-send:
-    deps: [build-send]
+  run-producer:
+    deps: [build-producer]
     cmds:
-      - ./send/bin/{{.EXENAMEP1}}
+      - ./producer/bin/{{.EXENAMEP1}}
     silent: true
 
   compose-up:
@@ -26,17 +26,17 @@ tasks:
     cmds:
       - docker compose down
 
-  build-receive:
+  build-consumer:
     cmds:
-      - go build -o ./receive/bin/{{.EXENAMEP2}} receive/main.go
+      - go build -o ./consumer/bin/{{.EXENAMEP2}} consumer/main.go
     silent: true
 
-  run-receive:
-    deps: [build-receive]
+  run-consumer:
+    deps: [build-consumer]
     cmds:
-      - ./receive/bin/{{.EXENAMEP2}}
+      - ./consumer/bin/{{.EXENAMEP2}}
     silent: true
 
-  build-receiver-dockerfile:
+  build-consumer-dockerfile:
     cmds:
-      - docker build -f receive.Dockerfile --tag docker-rabbitmq-receiver .
+      - docker build -f consumer.Dockerfile --tag docker-rabbitmq-consumer .
