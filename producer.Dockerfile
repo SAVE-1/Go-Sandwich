@@ -1,14 +1,14 @@
-FROM golang:trixie
+FROM golang:trixie AS builder
 WORKDIR /app
 
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Copy full source (keeps folder structure intact)
 COPY ./producer ./producer
+RUN CGO_ENABLED=0 GOOS=linux go build -o /application ./producer
 
-# Build
-RUN CGO_ENABLED=0 GOOS=linux go build -o /docker-gs-ping ./producer
-
-EXPOSE 8083
-CMD ["/docker-gs-ping"]
+FROM alpine:latest
+WORKDIR /app
+COPY --from=builder /application ./
+EXPOSE 8080 8080
+CMD ["./application"]

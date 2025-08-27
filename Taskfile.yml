@@ -29,7 +29,7 @@ tasks:
 
   build-producer-dockerfile:
     cmds:
-      - docker build -f producer.Dockerfile --tag docker-rabbitmq-producer . 
+      - docker build -t rabbitmq-producer:latest -f producer.Dockerfile --tag rabbitmq-producer . 
 
 # CONSUMER
   build-consumer:
@@ -45,4 +45,4 @@ tasks:
 
   build-consumer-dockerfile:
     cmds:
-      - docker build -f consumer.Dockerfile --tag docker-rabbitmq-consumer .
+      - docker build -t docker-rabbitmq-consumer:latest -f consumer.Dockerfile --tag rabbit-consumer .
