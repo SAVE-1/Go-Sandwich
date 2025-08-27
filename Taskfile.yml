@@ -7,6 +7,15 @@ vars:
   EXENAMEP2: consumer.exe
 
 tasks:
+  compose-up:
+    cmds:
+      - docker compose up -d # -d == silent compose
+
+  compose-down:
+    cmds:
+      - docker compose down
+
+# PRODUCER
   build-producer:
     cmds:
       - go build -o ./producer/bin/{{.EXENAMEP1}} producer/main.go
@@ -18,14 +27,11 @@ tasks:
       - ./producer/bin/{{.EXENAMEP1}}
     silent: true
 
-  compose-up:
+  build-producer-dockerfile:
     cmds:
-      - docker compose up -d # -d == silent compose
+      - docker build -f producer.Dockerfile --tag docker-rabbitmq-producer . 
 
-  compose-down:
-    cmds:
-      - docker compose down
-
+# CONSUMER
   build-consumer:
     cmds:
       - go build -o ./consumer/bin/{{.EXENAMEP2}} consumer/main.go

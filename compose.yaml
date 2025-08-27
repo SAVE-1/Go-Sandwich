@@ -24,10 +24,14 @@ services:
       - rabbitmq
     environment:
       RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672/"
+    
+
 
 volumes:
   rabbitmq_data:
 
 networks:
   backend:
+    driver: bridge
+  frontend:
     driver: bridge
