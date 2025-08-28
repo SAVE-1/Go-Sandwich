@@ -5,10 +5,15 @@ services:
       - "5672:5672"
       - "15672:15672"
     volumes:
-      - 'rabbitmq_data:/var/lib/rabbitmq/mnesia/'
+      - rabbitmq_data:/var/lib/rabbitmq/mnesia
     networks:
       - backend
     restart: always
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   rabbit-consumer:
     image: "rabbitmq-consumer"
@@ -19,7 +24,8 @@ services:
     networks:
       - backend
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
     environment:
       RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672/"
 
@@ -35,7 +41,8 @@ services:
       - backend
       - frontend
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
     environment:
       RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672/"
       PRODUCER_HOST_PORT: "8080"
