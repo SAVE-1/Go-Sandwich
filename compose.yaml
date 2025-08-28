@@ -1,11 +1,9 @@
 services:
   rabbitmq:
     image: "rabbitmq:3-management"
-    hostname: "rabbit-mq-management-1"
     ports:
       - "5672:5672"
       - "15672:15672"
-      - "5000:5673"
     volumes:
       - 'rabbitmq_data:/var/lib/rabbitmq/mnesia/'
     networks:
@@ -13,7 +11,7 @@ services:
     restart: always
 
   rabbit-consumer:
-    image: "docker-rabbitmq-consumer"
+    image: "rabbitmq-consumer"
     build:
       context: .
       dockerfile: consumer.Dockerfile
@@ -24,8 +22,23 @@ services:
       - rabbitmq
     environment:
       RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672/"
-    
 
+  rabbit-producer:
+    image: "rabbitmq-producer"
+    ports:
+      - "8080:8080"
+    build:
+      context: .
+      dockerfile: producer.Dockerfile
+    restart: always
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      - rabbitmq
+    environment:
+      RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672/"
+      PRODUCER_HOST_PORT: "8080"
 
 volumes:
   rabbitmq_data:

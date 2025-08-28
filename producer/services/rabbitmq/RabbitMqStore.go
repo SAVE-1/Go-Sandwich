@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 	"time"
 
 	amqp "github.com/rabbitmq/amqp091-go"
@@ -22,13 +21,8 @@ func (r *RabbitMQStore) CloseConnection() {
 	r.Connection.Close()
 }
 
-func NewRabbitMqStore() error {
-	url := os.Getenv("RABBITMQ_URL")
-	if url == "" {
-		url = "amqp://guest:guest@localhost:5672/"
-	}
-
-	connection, err := amqp.Dial(url)
+func NewRabbitMqStore(connectionString string) error {
+	connection, err := amqp.Dial(connectionString)
 
 	if err != nil {
 		return fmt.Errorf("failed to connect to RabbitMQ: %w", err)
@@ -49,13 +43,14 @@ func NewRabbitMqStore() error {
 }
 
 func (r *RabbitMQStore) MakeASandwichRequest(o ObjectRequest) error {
+	fmt.Println("joo #1")
 	q, err := r.Channel.QueueDeclare(
 		"supersandwich.sandwich_orders", // name
-		true,             // durable
-		false,            // delete when unused
-		false,            // exclusive
-		false,            // no-wait
-		nil,              // arguments
+		true,                            // durable
+		false,                           // delete when unused
+		false,                           // exclusive
+		false,                           // no-wait
+		nil,                             // arguments
 	)
 
 	if err != nil {
@@ -67,9 +62,7 @@ func (r *RabbitMQStore) MakeASandwichRequest(o ObjectRequest) error {
 
 	json, err := o.ToJson()
 
-	fmt.Println("######")
-	fmt.Println("json:", string(json))
-	fmt.Println("######")
+	fmt.Println("joo #2")
 
 	if err != nil {
 		return fmt.Errorf("failed to declare a queue: %w", err)
