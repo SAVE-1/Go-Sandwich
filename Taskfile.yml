@@ -46,3 +46,13 @@ tasks:
   build-consumer-dockerfile:
     cmds:
       - docker build -t docker-rabbitmq-consumer:latest -f consumer.Dockerfile --tag rabbit-consumer .
+
+# UTILITY
+  loc:
+    cmds:
+      - cloc . --exclude-dir=.git
+
+# TESTING
+  rabbit-test:
+    cmds:
+      - docker run -d --hostname my-rabbit --name some-rabbit -p 8080:15672 -p 5672:5672 rabbitmq:3-management
