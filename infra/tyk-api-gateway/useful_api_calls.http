@@ -1,26 +1,3 @@
-
-POST http://localhost:8083/sandwich
-Content-Type: application/json
-Accept-Language: en-US,en;q=0.5
-
-{
-    "count": 2,
-    "name": "nami sämmitsi",
-    "type": 0
-}
-
-###
-
-GET http://localhost:8083/ping
-
-###
-
-###
-
-GET http://localhost:8080/ping
-
-###
-
 # Check the gateway is up and running
 http://localhost:8080/hello
 
@@ -69,7 +46,4 @@ Content-Type: application/json
         "strip_listen_path": true
     }
 }
-
-
-
 

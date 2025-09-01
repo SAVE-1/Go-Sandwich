@@ -27,12 +27,12 @@ services:
       rabbitmq:
         condition: service_healthy
     environment:
-      RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672/"
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
 
   rabbit-producer:
     image: "rabbitmq-producer"
     ports:
-      - "8080:8080"
+      - "8083:8083"
     build:
       context: .
       dockerfile: producer.Dockerfile
@@ -44,8 +44,34 @@ services:
       rabbitmq:
         condition: service_healthy
     environment:
-      RABBITMQ_URL: "amqp://guest:guest@rabbitmq:5672/"
-      PRODUCER_HOST_PORT: "8080"
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+      - PRODUCER_HOST_PORT=8083
+
+# TESTING
+  tyk-gateway:
+    image: docker.tyk.io/tyk-gateway/tyk-gateway:v5.5.0
+    ports:
+      - 8080:8080
+    networks:
+      - tyk
+    volumes:
+      - ./infra/tyk-api-gateway/tyk.standalone.conf:/opt/tyk-gateway/tyk.conf
+      - ./infra/tyk-api-gateway/apps:/opt/tyk-gateway/apps
+      - ./infra/tyk-api-gateway/middleware:/opt/tyk-gateway/middleware
+      - ./infra/tyk-api-gateway/certs:/opt/tyk-gateway/certs
+      - ./infra/tyk-api-gateway/policies:/opt/tyk-gateway/policies
+    environment:
+      - TYK_GW_SECRET=foo
+    depends_on:
+      - tyk-redis
+
+  tyk-redis:
+    image: redis:6.2.7-alpine
+    networks:
+      - tyk
+    ports:
+      - 6379:6379
+# TESTING
 
 volumes:
   rabbitmq_data:
@@ -54,4 +80,6 @@ networks:
   backend:
     driver: bridge
   frontend:
+    driver: bridge
+  tyk:
     driver: bridge

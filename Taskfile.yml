@@ -7,6 +7,7 @@ vars:
   EXENAMEP2: consumer.exe
 
 tasks:
+# COMPOSE
   compose-up:
     cmds:
       - docker compose up -d # -d == silent compose
@@ -51,6 +52,10 @@ tasks:
   loc:
     cmds:
       - cloc . --exclude-dir=.git
+
+  port:
+    cmds:
+      - netstat -ano | findstr {{.CLI_ARGS}}
 
 # TESTING
   rabbit-test:
