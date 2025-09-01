@@ -15,11 +15,11 @@ services:
       timeout: 5s
       retries: 5
 
-  rabbit-consumer:
+  consumer:
     image: "rabbitmq-consumer"
     build:
       context: .
-      dockerfile: consumer.Dockerfile
+      dockerfile: ./microservices/consumer.Dockerfile
     restart: always
     networks:
       - backend
@@ -29,13 +29,13 @@ services:
     environment:
       - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
 
-  rabbit-producer:
+  producer:
     image: "rabbitmq-producer"
     ports:
       - "8083:8083"
     build:
       context: .
-      dockerfile: producer.Dockerfile
+      dockerfile: ./microservices/producer.Dockerfile
     restart: always
     networks:
       - backend
@@ -49,12 +49,35 @@ services:
 
 # TESTING
 
-  envoy:
-    image: envoyproxy/envoy:dev-f384ab2b3e3aa0564ef25f57dc2ed8ad61eaf0cb
+  traefik:
+    image: "traefik:v3.5"
+    container_name: "traefik"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.web.address=:80"
     ports:
-      - "10000:10000"
+      - "80:80"
+      - "8080:8080"
     volumes:
-      - ./infra/envoy/envoy.yaml:/etc/envoy/envoy.yaml
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  whoami:
+    image: "traefik/whoami"
+    container_name: "simple-service"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
+      - "traefik.http.routers.whoami.entrypoints=web"
+
+  # envoy:
+  #   image: envoyproxy/envoy:dev-f384ab2b3e3aa0564ef25f57dc2ed8ad61eaf0cb
+  #   ports:
+  #     - "10000:10000"
+  #   volumes:
+  #     - ./infra/envoy/envoy.yaml:/etc/envoy/envoy.yaml
 
 
   # tyk-gateway:

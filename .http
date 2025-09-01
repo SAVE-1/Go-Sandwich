@@ -19,7 +19,18 @@ GET http://localhost:8083/ping
 
 GET http://localhost:8080/ping
 
+
 ###
+
+# ENVOY TESTS
+
+
+
+
+
+# END ENVOY TESTS
+
+# TYK TESTS
 
 # Check the gateway is up and running
 http://localhost:8080/hello
