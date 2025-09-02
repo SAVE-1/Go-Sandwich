@@ -1,3 +1,6 @@
+
+#  https://doc.traefik.io/traefik/v1.4/basics/
+
 services:
   rabbitmq:
     image: "rabbitmq:3-management"
@@ -31,8 +34,8 @@ services:
 
   producer:
     image: "rabbitmq-producer"
-    ports:
-      - "8083:8083"
+    # ports:
+    #   - "8083:8083"
     build:
       context: .
       dockerfile: ./microservices/producer.Dockerfile
@@ -43,66 +46,48 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+    labels:
+      traefik.http.routers.api.rule: "Host(`localhost`) && PathPrefix(`/sandwich`)"
     environment:
       - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
       - PRODUCER_HOST_PORT=8083
 
 # TESTING
-
   traefik:
-    image: "traefik:v3.5"
+    image: "traefik:v3.4"
     container_name: "traefik"
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - proxy
+      - frontend
     command:
-      #- "--log.level=DEBUG"
-      - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=proxy"
       - "--entryPoints.web.address=:80"
+      -  "--providers.file.filename=/config/traefik-config.yaml"
     ports:
       - "80:80"
       - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./infra/traefik/traefik-config.yaml:/config/traefik-config.yaml"
 
-  whoami:
+  whoami-api:
     image: "traefik/whoami"
-    container_name: "simple-service"
+    networks:
+      - proxy
+    container_name: "whoami-api"
+    environment:
+      - WHOAMI_NAME=API Service
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`whoami.localhost`)"
-      - "traefik.http.routers.whoami.entrypoints=web"
+      # Path-based routing
+      - "traefik.http.routers.whoami-api.rule=Host(`whoami.docker.localhost`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.whoami-api.entrypoints=web"
 
-  # envoy:
-  #   image: envoyproxy/envoy:dev-f384ab2b3e3aa0564ef25f57dc2ed8ad61eaf0cb
-  #   ports:
-  #     - "10000:10000"
-  #   volumes:
-  #     - ./infra/envoy/envoy.yaml:/etc/envoy/envoy.yaml
-
-
-  # tyk-gateway:
-  #   image: docker.tyk.io/tyk-gateway/tyk-gateway:v5.5.0
-  #   ports:
-  #     - 8080:8080
-  #   networks:
-  #     - tyk
-  #   volumes:
-  #     - ./infra/tyk-api-gateway/tyk.standalone.conf:/opt/tyk-gateway/tyk.conf
-  #     - ./infra/tyk-api-gateway/apps:/opt/tyk-gateway/apps
-  #     - ./infra/tyk-api-gateway/middleware:/opt/tyk-gateway/middleware
-  #     - ./infra/tyk-api-gateway/certs:/opt/tyk-gateway/certs
-  #     - ./infra/tyk-api-gateway/policies:/opt/tyk-gateway/policies
-  #   environment:
-  #     - TYK_GW_SECRET=foo
-  #   depends_on:
-  #     - tyk-redis
-
-  # tyk-redis:
-  #   image: redis:6.2.7-alpine
-  #   networks:
-  #     - tyk
-  #   ports:
-  #     - 6379:6379
 # TESTING
 
 volumes:
@@ -113,5 +98,5 @@ networks:
     driver: bridge
   frontend:
     driver: bridge
-  tyk:
-    driver: bridge
+  proxy:
+    name: proxy
