@@ -47,7 +47,10 @@ services:
       rabbitmq:
         condition: service_healthy
     labels:
-      traefik.http.routers.api.rule: "Host(`localhost`) && PathPrefix(`/sandwich`)"
+      - "traefik.enable=true"
+      - "traefik.http.routers.producer.rule=Host(`localhost`) && PathPrefix(`/sandwich`)"
+      - "traefik.http.routers.producer.entrypoints=web"
+      - "traefik.http.services.producer.loadbalancer.server.port=8083"
     environment:
       - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
       - PRODUCER_HOST_PORT=8083
@@ -60,7 +63,6 @@ services:
     security_opt:
       - no-new-privileges:true
     networks:
-      - proxy
       - frontend
     command:
       - "--providers.docker=true"
@@ -78,7 +80,7 @@ services:
   whoami-api:
     image: "traefik/whoami"
     networks:
-      - proxy
+      - frontend
     container_name: "whoami-api"
     environment:
       - WHOAMI_NAME=API Service
@@ -98,5 +100,3 @@ networks:
     driver: bridge
   frontend:
     driver: bridge
-  proxy:
-    name: proxy

@@ -1,11 +1,11 @@
-http:
-  routers:
-    native-api:
-      rule: "Host(`localhost`) && PathPrefix(`/api`)"
-      service: native-api
+# http:
+#   routers:
+#     native-api:
+#       rule: "Host(`localhost`) && PathPrefix(`/api`)"
+#       service: native-api
 
-  services:
-    native-api:
-      loadBalancer:
-        servers:
-          - url: "http://host.docker.internal:8083/"
+#   services:
+#     native-api:
+#       loadBalancer:
+#         servers:
+#           - url: "http://host.docker.internal:8083/"
