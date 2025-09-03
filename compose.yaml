@@ -1,4 +1,3 @@
-
 #  https://doc.traefik.io/traefik/v1.4/basics/
 
 services:
@@ -20,9 +19,10 @@ services:
 
   consumer:
     image: "rabbitmq-consumer"
+    container_name: "consumer"
     build:
       context: .
-      dockerfile: ./microservices/consumer.Dockerfile
+      dockerfile: ./consumer.Dockerfile
     restart: always
     networks:
       - backend
@@ -34,11 +34,12 @@ services:
 
   producer:
     image: "rabbitmq-producer"
+    container_name: "producer"
     # ports:
     #   - "8083:8083"
     build:
       context: .
-      dockerfile: ./microservices/producer.Dockerfile
+      dockerfile: ./producer.Dockerfile
     restart: always
     networks:
       - backend
@@ -48,34 +49,36 @@ services:
         condition: service_healthy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.producer.rule=Host(`localhost`) && PathPrefix(`/sandwich`)"
+      - "traefik.http.routers.producer.rule=Host(`localhost`) && PathPrefix(`/`)"
+      # - "traefik.http.routers.producer.rule=Host(`localhost`) && PathPrefix(`/sandwich`)"
       - "traefik.http.routers.producer.entrypoints=web"
       - "traefik.http.services.producer.loadbalancer.server.port=8083"
     environment:
       - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
       - PRODUCER_HOST_PORT=8083
 
-# TESTING
+  # TESTING
   traefik:
     image: "traefik:v3.4"
     container_name: "traefik"
+    ports:
+      - "80:80"
+      - "8080:8080"
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
     networks:
       - frontend
+      - backend
     command:
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
-      - "--providers.docker.network=proxy"
+      # - "--providers.docker.network=frontend"
       - "--entryPoints.web.address=:80"
-      -  "--providers.file.filename=/config/traefik-config.yaml"
-    ports:
-      - "80:80"
-      - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./infra/traefik/traefik-config.yaml:/config/traefik-config.yaml"
 
   whoami-api:
     image: "traefik/whoami"

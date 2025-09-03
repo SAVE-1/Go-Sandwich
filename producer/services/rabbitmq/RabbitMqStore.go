@@ -43,7 +43,6 @@ func NewRabbitMqStore(connectionString string) error {
 }
 
 func (r *RabbitMQStore) MakeASandwichRequest(o ObjectRequest) error {
-	fmt.Println("joo #1")
 	q, err := r.Channel.QueueDeclare(
 		"supersandwich.sandwich_orders", // name
 		true,                            // durable
@@ -61,8 +60,6 @@ func (r *RabbitMQStore) MakeASandwichRequest(o ObjectRequest) error {
 	defer cancel()
 
 	json, err := o.ToJson()
-
-	fmt.Println("joo #2")
 
 	if err != nil {
 		return fmt.Errorf("failed to declare a queue: %w", err)

@@ -14,3 +14,15 @@ http://localhost:15672/#/
         - 15672 -- management interface
         - 5672 -- data port
 ```
+
+
+# Links
+## Most useful
+https://docs.docker.com/guides/traefik/
+
+## Comprehensive, not as useful tho
+https://www.reddit.com/r/homelab/comments/viggia/ultimate_traefik_docker_compose_guide_2022/
+
+https://www.simplehomelab.com/udms-18-traefik-docker-compose-guide/
+
+https://github.com/SimpleHomelab/Docker-Traefik/tree/master

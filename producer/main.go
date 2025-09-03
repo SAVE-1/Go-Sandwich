@@ -42,35 +42,66 @@ func main() {
 	router := gin.Default()
 	router.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"message": "pong",
+			"message": "pong DING DONG)))",
 		})
 	})
 
 	router.POST("/sandwich", makeSandwichOrderPOST)
+	router.GET("/menu", getMenuGET)
 
 	router.Run(fmt.Sprintf(":%s", port)) // listen and serve on 0.0.0.0:8080
 }
 
-func makeSandwichOrderPOST(c *gin.Context) {
-	var r rabbitmq.SandwichRequest
 
-	if err := c.ShouldBindJSON(&r); err != nil {
+// @Summary      Creates a sandwich order
+// @Description  Creates a sandwich order
+// @Tags         create-sandwich
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int  true  "User ID"
+// @Success      200  {object}  map[string]interface{}
+// @Failure      400  {object}  map[string]string
+// @Router       /users/{id} [get]
+func makeSandwichOrderPOST(c *gin.Context) {
+	var requestData rabbitmq.SandwichRequest
+
+	if err := c.ShouldBindJSON(&requestData); err != nil {
 		c.Error(err)
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
-	fmt.Println(r)
+	fmt.Println(requestData)
 
-	err := rabbitmq.RabbitMQClient.MakeASandwichRequest(r)
+	err := rabbitmq.RabbitMQClient.MakeASandwichRequest(requestData)
 
 	if err != nil {
 		fmt.Println(err)
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to send coffee order to RabbitMQ queue"})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed to send sandwich order to RabbitMQ queue"})
 		return
 	}
 
-	c.JSON(http.StatusOK, r)
+	c.JSON(http.StatusOK, requestData)
+}
+
+type Menu struct {
+	FranchiseName string
+	Menu map[string]float32
+	BaseCurrency string
+}
+
+func getMenuGET(c *gin.Context) {
+	n := Menu {
+		FranchiseName: "SuperSandwich",
+		Menu: map[string]float32{
+			"Vegan EXTREME": 5.3,
+			"Meat EXTREME": 15.0,
+			"Burrito EXTREME": 12.0,
+		},
+		BaseCurrency: "euro",
+	}
+
+ 	c.JSON(http.StatusOK, n)
 }
 
 func failOnError(err error, msg string) {

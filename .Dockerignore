@@ -1,2 +1,2 @@
-./producer/bin
-./consumer/bin
+./microservices/producer/bin
+./microservices/consumer/bin

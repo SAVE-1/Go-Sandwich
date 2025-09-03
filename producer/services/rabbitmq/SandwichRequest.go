@@ -5,6 +5,7 @@ import (
 	"fmt"
 )
 
+// SandWich order creation POST struct
 type SandwichRequest struct {
 	Count int    `json:"Count" binding:"required"`
 	Name  string `json:"Name" binding:"required"`
