@@ -20,7 +20,7 @@ func main() {
 	// docker run -d --hostname my-rabbit --name some-rabbit -p 8080:15672 5672:5672 rabbitmq:3-management
 	// docker run -d --hostname my-rabbit --name some-rabbit -p 8080:15672 -p 5672:5672 rabbitmq:3-management
 	port := os.Getenv("PRODUCER_HOST_PORT")
-	fmt.Println("da port:", port)
+	fmt.Println(".env port:", port)
 
 	if port == "" {
 		port = "8080"
