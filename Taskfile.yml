@@ -28,7 +28,7 @@ tasks:
 
   build-producer-dockerfile:
     cmds:
-      - docker build -t rabbitmq-producer:latest -f ./services/producer.Dockerfile --tag rabbitmq-producer . 
+      - docker build -f ./infra/producer.Dockerfile -t producer:latest .
 
 # CONSUMER
   build-consumer:
@@ -42,7 +42,7 @@ tasks:
 
   build-consumer-dockerfile:
     cmds:
-      - docker build -t docker-rabbitmq-consumer:latest -f ./services/consumer.Dockerfile --tag rabbit-consumer .
+      - docker build -f ./infra/producer.Dockerfile -t consumer:latest .
 
 # UTILITY
   loc:
@@ -57,3 +57,12 @@ tasks:
   rabbit-test:
     cmds:
       - docker run -d --hostname my-rabbit --name some-rabbit -p 8080:15672 -p 5672:5672 rabbitmq:3-management
+
+# compose
+  up:
+    cmds:
+      - docker compose -f ./infra/compose.yaml up -d
+
+  down:
+    cmds:
+      - docker compose -f ./infra/compose.yaml down

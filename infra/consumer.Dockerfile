@@ -6,9 +6,9 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 
-COPY ./consumer ./consumer
+COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /application ./consumer
+RUN CGO_ENABLED=0 GOOS=linux go build -o /application ./services/consumer
 
 FROM alpine:latest
 WORKDIR /app

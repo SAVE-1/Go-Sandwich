@@ -1,0 +1,105 @@
+#  https://doc.traefik.io/traefik/v1.4/basics/
+
+services:
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq/mnesia
+    networks:
+      - backend
+    restart: always
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  consumer:
+    image: "rabbitmq-consumer"
+    container_name: "consumer"
+    build:
+      context: .
+      dockerfile: ./consumer.Dockerfile
+    restart: always
+    networks:
+      - backend
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+
+  producer:
+    image: "rabbitmq-producer"
+    container_name: "producer"
+    # ports:
+    #   - "8083:8083"
+    build:
+      context: .
+      dockerfile: ./producer.Dockerfile
+    restart: always
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.producer.rule=Host(`localhost`) && PathPrefix(`/`)"
+      # - "traefik.http.routers.producer.rule=Host(`localhost`) && PathPrefix(`/sandwich`)"
+      - "traefik.http.routers.producer.entrypoints=web"
+      - "traefik.http.services.producer.loadbalancer.server.port=8083"
+    environment:
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+      - PRODUCER_HOST_PORT=8083
+
+  # TESTING
+  traefik:
+    image: "traefik:v3.4"
+    container_name: "traefik"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - frontend
+      - backend
+    command:
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      # - "--providers.docker.network=frontend"
+      - "--entryPoints.web.address=:80"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  whoami-api:
+    image: "traefik/whoami"
+    networks:
+      - frontend
+    container_name: "whoami-api"
+    environment:
+      - WHOAMI_NAME=API Service
+    labels:
+      - "traefik.enable=true"
+      # Path-based routing
+      - "traefik.http.routers.whoami-api.rule=Host(`whoami.docker.localhost`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.whoami-api.entrypoints=web"
+
+# TESTING
+
+volumes:
+  rabbitmq_data:
+
+networks:
+  backend:
+    driver: bridge
+  frontend:
+    driver: bridge
