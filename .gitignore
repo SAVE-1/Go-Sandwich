@@ -2,3 +2,7 @@
 
 producer/bin/*
 consumer/bin/*
+
+**/.env
+**/.env.local
+**/env*
