@@ -22,7 +22,7 @@ services:
     container_name: "consumer"
     build:
       context: .
-      dockerfile: ./consumer.Dockerfile
+      dockerfile: ./infra/consumer.Dockerfile
     restart: always
     networks:
       - backend
@@ -39,7 +39,7 @@ services:
     #   - "8083:8083"
     build:
       context: .
-      dockerfile: ./producer.Dockerfile
+      dockerfile: ./infra/producer.Dockerfile
     restart: always
     networks:
       - backend

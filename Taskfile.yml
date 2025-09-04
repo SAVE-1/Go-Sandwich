@@ -19,34 +19,30 @@ tasks:
 # PRODUCER
   build-producer:
     cmds:
-      - go build -o ./producer/bin/{{.EXENAMEP1}} ./producer/main.go
-    silent: true
+      - go build -o ./services/producer/bin/{{.EXENAMEP1}} ./services/producer/main.go
 
   run-producer:
     deps: [build-producer]
     cmds:
-      - ./producer/bin/{{.EXENAMEP1}}
-    silent: true
+      - ./services/producer/bin/{{.EXENAMEP1}}
 
   build-producer-dockerfile:
     cmds:
-      - docker build -t rabbitmq-producer:latest -f ./producer.Dockerfile --tag rabbitmq-producer . 
+      - docker build -t rabbitmq-producer:latest -f ./services/producer.Dockerfile --tag rabbitmq-producer . 
 
 # CONSUMER
   build-consumer:
     cmds:
-      - go build -o ./consumer/bin/{{.EXENAMEP2}} ./consumer/main.go
-    silent: true
+      - go build -o ./services/consumer/bin/{{.EXENAMEP2}} ./services/consumer/main.go
 
   run-consumer:
     deps: [build-consumer]
     cmds:
-      - ./consumer/bin/{{.EXENAMEP2}}
-    silent: true
+      - ./services/consumer/bin/{{.EXENAMEP2}}
 
   build-consumer-dockerfile:
     cmds:
-      - docker build -t docker-rabbitmq-consumer:latest -f ./consumer.Dockerfile --tag rabbit-consumer .
+      - docker build -t docker-rabbitmq-consumer:latest -f ./services/consumer.Dockerfile --tag rabbit-consumer .
 
 # UTILITY
   loc:
