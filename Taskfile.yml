@@ -8,13 +8,13 @@ vars:
 
 tasks:
 # COMPOSE
-  compose-up:
+  up:
     cmds:
-      - docker compose up -d # -d == silent compose
+      - docker compose -f ./infra/compose.yaml up -d
 
-  compose-down:
+  down:
     cmds:
-      - docker compose down
+      - docker compose -f ./infra/compose.yaml down
 
 # PRODUCER
   build-producer:
@@ -58,11 +58,4 @@ tasks:
     cmds:
       - docker run -d --hostname my-rabbit --name some-rabbit -p 8080:15672 -p 5672:5672 rabbitmq:3-management
 
-# compose
-  up:
-    cmds:
-      - docker compose -f ./infra/compose.yaml up -d
 
-  down:
-    cmds:
-      - docker compose -f ./infra/compose.yaml down
