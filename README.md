@@ -26,3 +26,7 @@ https://www.reddit.com/r/homelab/comments/viggia/ultimate_traefik_docker_compose
 https://www.simplehomelab.com/udms-18-traefik-docker-compose-guide/
 
 https://github.com/SimpleHomelab/Docker-Traefik/tree/master
+
+
+# Check out
+https://skaffold.dev/
