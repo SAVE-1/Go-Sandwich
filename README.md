@@ -1,12 +1,35 @@
-# URLs
+# Requirements
+- Docker + Docker Compose
+    - https://www.docker.com/
+- Git
 
-# RabbitMQ management console in a docker environment
+## Nice to have
+- Task, just because of the utility scripts in Taskfile.yml
+    - https://taskfile.dev/
+- VSCode
+    - https://code.visualstudio.com/
+- Go, at least version go1.24.5 windows/amd64
+    - Mostly if you want to run anything locally, the project can be run without it
+
+# Architecture
+![Architecture](./docs/img/architecture.jpg)
+There is also an architecture pic in **docs/architecture.drawio**
+
+# Service breakdown
+## Traefik
+
+## Producer
+
+## RabbitMQ
+
+## Consumer
+
+# How to run
+Locally, the project can be started with "task up" and shutdown with "task down" in console/powershell
+
+# Useful URLs
+## RabbitMQ management console in a docker environment
 http://localhost:15672/#/
-
-# count project LOC
-```
-    cloc . --exclude-dir=.git   
-```
 
 # start a nice instance of rabbitmq with a management console, for local testing
 ```
@@ -14,7 +37,6 @@ http://localhost:15672/#/
         - 15672 -- management interface
         - 5672 -- data port
 ```
-
 
 # Links
 ## Most useful
