@@ -10,14 +10,6 @@ The structure is:
 
 Common emojis:
 ```
-    ✨ :sparkles: : Introducing a new feature
-    🐛 :bug:      : Fixing a bug
-    📝 :memo:     : Adding or updating documentation
-    ♻️ :recycle:  : Refactoring code
-    📦️ :package:  : Adding or updating compiled files or packages
-    🚀 :rocket:   : Deploying stuff
-    🔧 :wrench    : Configuration, tooling, or chores
-
     Emoji	Type	  Description
     ✨	   feat	     A new feature or functionality.
     🐛	    fix	      A bug fix.
