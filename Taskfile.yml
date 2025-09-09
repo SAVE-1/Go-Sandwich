@@ -52,7 +52,7 @@ tasks:
 # UTILITY
   loc:
     cmds:
-      - cloc . --exclude-dir=.git
+      - cloc . --exclude-dir=.git,temp
 
   port:
     cmds:
