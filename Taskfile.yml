@@ -10,11 +10,16 @@ tasks:
 # COMPOSE
   up:
     cmds:
-      - docker compose -f ./infra/compose.yaml up -d
+      - docker compose -f ./infra/compose-dev.yaml up -d
+
+  build:
+    cmds:
+      - docker compose -f ./infra/compose-dev.yaml build --no-cache
+      - docker compose -f ./infra/compose-dev.yaml up -d
 
   down:
     cmds:
-      - docker compose -f ./infra/compose.yaml down
+      - docker compose -f ./infra/compose-dev.yaml down
 
 # PRODUCER
   build-producer:
@@ -28,7 +33,7 @@ tasks:
 
   build-producer-dockerfile:
     cmds:
-      - docker build -f ./infra/producer.Dockerfile -t producer:latest .
+      - docker build -f ./infra/producer.Dockerfile -t rabbit-producer:latest .
 
 # CONSUMER
   build-consumer:
@@ -42,7 +47,7 @@ tasks:
 
   build-consumer-dockerfile:
     cmds:
-      - docker build -f ./infra/producer.Dockerfile -t consumer:latest .
+      - docker build -f ./infra/consumer.Dockerfile -t rabbit-consumer:latest .
 
 # UTILITY
   loc:

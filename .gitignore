@@ -6,3 +6,5 @@ consumer/bin/*
 **/.env
 **/.env.local
 **/env*
+
+/temp/

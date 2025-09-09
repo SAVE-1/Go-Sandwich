@@ -9,7 +9,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var version = "0.1.1-development"
+
 func main() {
+	fmt.Println("Rabbit consumer version", version)
 	port := os.Getenv("PRODUCER_HOST_PORT")
 	fmt.Println(".env port:", port)
 
