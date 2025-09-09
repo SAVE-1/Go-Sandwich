@@ -10,14 +10,14 @@ The structure is:
 
 Common emojis:
 ```
-    Emoji	Type	  Description
-    ✨	   feat	     A new feature or functionality.
-    🐛	    fix	      A bug fix.
-    📝	    docs      Documentation changes.
-    ♻️	    refactor  Refactoring code without changing behavior.
-    🔧	    chore	  Build process or auxiliary tool changes.
-    🚀      deploy    Deploying stuff
-    📦️      package   Adding or updating compiled files or packages
+    Emoji   Type	    Description
+    ✨      feat        A new feature or functionality.
+    🐛      fix         A bug fix.
+    📝      docs        Documentation changes.
+    ♻️      refactor    Refactoring code without changing behavior.
+    🔧      chore       Build process or auxiliary tool changes.
+    🚀      deploy      Deploying stuff
+    📦️      package     Adding or updating compiled files or packages
 
 ```
 
