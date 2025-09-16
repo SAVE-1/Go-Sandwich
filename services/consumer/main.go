@@ -67,7 +67,6 @@ func main() {
 
 	go func() {
 		for d := range msgs {
-			fmt.Println("dawdawdawd")
 			log.Printf("Received a message: %s", d.Body)
 
 			uglyInsert(urlPostGresql)
@@ -100,8 +99,6 @@ func uglyInsert(conn string) {
 		panic(err)
 	}
 
-	fmt.Println("we in boyz")
-
 	name := "jee"
 
 	rows, err := db.Query("SELECT name FROM test WHERE name = $1", name)
@@ -122,7 +119,7 @@ INSERT INTO test (name)
 VALUES ($1)
 RETURNING id`
 	id := 0
-	err = db.QueryRow(sqlStatement, "Seppo@maansiirtovirma.fi").Scan(&id)
+	err = db.QueryRow(sqlStatement, "test@test.random").Scan(&id)
 	if err != nil {
 		panic(err)
 	}
