@@ -3,15 +3,19 @@
 FROM golang:trixie AS builder
 WORKDIR /app
 
+ENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64
 COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /application ./services/producer
+# RUN go build -o /application ./services/producer
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    go build -o /application ./services/producer
 
+# final stage
 FROM alpine:latest
 WORKDIR /app
 COPY --from=builder /application ./
-EXPOSE 8080 8080
+EXPOSE 8080
 CMD ["./application"]

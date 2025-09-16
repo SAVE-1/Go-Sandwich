@@ -19,10 +19,10 @@ services:
 
   consumer:
     image: "rabbit-consumer:latest"
-    container_name: "consumer"
+    container_name: "consumer-dev"
     build:
       context: ..
-      dockerfile: ./infra/consumer.Dockerfile
+      dockerfile: ./infra/consumer.Dockerfile.dev
     restart: always
     networks:
       - backend
@@ -35,12 +35,12 @@ services:
 
   producer:
     image: "rabbit-producer:latest"
-    container_name: "producer"
+    container_name: "producer-dev"
     # ports:
     #   - "8083:8083"
     build:
       context: ..
-      dockerfile: ./infra/producer.Dockerfile
+      dockerfile: ./infra/producer.Dockerfile.dev
     restart: always
     networks:
       - backend

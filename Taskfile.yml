@@ -31,9 +31,9 @@ tasks:
     cmds:
       - ./services/producer/bin/{{.EXENAMEP1}}
 
-  build-producer-dockerfile:
+  producer-image:
     cmds:
-      - docker build -f ./infra/producer.Dockerfile -t rabbit-producer:latest .
+      - docker build -f ./infra/producer.Dockerfile.dev -t rabbit-producer:latest .
 
 # CONSUMER
   build-consumer:
@@ -45,7 +45,7 @@ tasks:
     cmds:
       - ./services/consumer/bin/{{.EXENAMEP2}}
 
-  build-consumer-dockerfile:
+  consumer-image:
     cmds:
       - docker build -f ./infra/consumer.Dockerfile -t rabbit-consumer:latest .
 

@@ -3,13 +3,17 @@
 FROM golang:trixie AS builder
 WORKDIR /app
 
+ENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64
+
 COPY go.mod go.sum ./
+
 RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /application ./services/consumer
+RUN -trimpath -ldflags="-s -w" -o /application ./services/consumer
 
+# final stage
 FROM alpine:latest
 WORKDIR /app
 COPY --from=builder /application ./

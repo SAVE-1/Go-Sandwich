@@ -9,7 +9,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var version = "0.1.1-development"
+var version = "0.1.8-development"
+
+func void() {
+	fmt.Println("yeehaaww")
+}
 
 func main() {
 	fmt.Println("Rabbit consumer version", version)
