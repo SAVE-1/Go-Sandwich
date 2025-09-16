@@ -47,7 +47,7 @@ tasks:
 
   consumer-image:
     cmds:
-      - docker build -f ./infra/consumer.Dockerfile -t rabbit-consumer:latest .
+      - docker build -f ./infra/consumer.Dockerfile.dev -t rabbit-consumer:latest .
 
 # UTILITY
   loc:
