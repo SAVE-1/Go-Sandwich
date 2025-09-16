@@ -29,7 +29,7 @@ Before you begin, ensure you have the following installed:
 # 🚀 Getting Started
 ## 1. Clone the repository
 ```
-git clone https://docs.github.com/en/repositories/creating-and-managing-repositories/quickstart-for-repositories
+git clone https://github.com/SAVE-1/Go-Sandwich.git
 cd [repository-folder]
 ```
 
