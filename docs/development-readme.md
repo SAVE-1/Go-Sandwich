@@ -1,3 +1,46 @@
+# Service breakdown
+## Traefik
+
+## Producer
+
+## RabbitMQ
+
+## Consumer
+
+## PostgreSQL
+
+# How to run
+Locally, the project can be started with "task up" and shutdown with "task down" in console/powershell
+
+Currently there only exists development versions of the project
+
+# Useful URLs
+## RabbitMQ management console in a docker environment
+http://localhost:15672/#/
+
+# start a nice instance of rabbitmq with a management console, for local testing
+```
+    docker run -d --hostname my-rabbit --name some-rabbit -p 8080:15672 -p 5672:5672 rabbitmq:3-management
+        - 15672 -- management interface
+        - 5672 -- data port
+```
+
+# Links
+## Most useful
+https://docs.docker.com/guides/traefik/
+
+## Comprehensive, not as useful tho
+https://www.reddit.com/r/homelab/comments/viggia/ultimate_traefik_docker_compose_guide_2022/
+
+https://www.simplehomelab.com/udms-18-traefik-docker-compose-guide/
+
+https://github.com/SimpleHomelab/Docker-Traefik/tree/master
+
+
+# Random 
+# Check out
+https://skaffold.dev/
+
 
 # Git commit comment style
 ## Gitmoji Style
@@ -33,3 +76,41 @@ Common emojis:
 
     📦️ chore: Upgrade dependencies for build pipeline
 ```
+
+## Complete Docker version
+```
+Client:
+ Version:           28.3.3
+ API version:       1.51
+ Go version:        go1.24.5
+ Git commit:        980b856
+ Built:             Fri Jul 25 11:36:03 2025
+ OS/Arch:           windows/amd64
+ Context:           desktop-linux
+
+Server: Docker Desktop 4.45.0 (203075)
+ Engine:
+  Version:          28.3.3
+  API version:      1.51 (minimum version 1.24)
+  Go version:       go1.24.5
+  Git commit:       bea959c
+  Built:            Fri Jul 25 11:34:00 2025
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.7.27
+  GitCommit:        05044ec0a9a75232cad458027ca83437aae3f4da
+ runc:
+  Version:          1.2.5
+  GitCommit:        v1.2.5-0-g59923ef
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+
+---
+
+Docker Compose version v2.39.2-desktop.1
+```
+
+
+
