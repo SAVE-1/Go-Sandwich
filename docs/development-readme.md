@@ -18,29 +18,15 @@ Currently there only exists development versions of the project
 ## RabbitMQ management console in a docker environment
 http://localhost:15672/#/
 
+## Postgresql
+http://localhost:8081/
+
 # start a nice instance of rabbitmq with a management console, for local testing
 ```
     docker run -d --hostname my-rabbit --name some-rabbit -p 8080:15672 -p 5672:5672 rabbitmq:3-management
         - 15672 -- management interface
         - 5672 -- data port
 ```
-
-# Links
-## Most useful
-https://docs.docker.com/guides/traefik/
-
-## Comprehensive, not as useful tho
-https://www.reddit.com/r/homelab/comments/viggia/ultimate_traefik_docker_compose_guide_2022/
-
-https://www.simplehomelab.com/udms-18-traefik-docker-compose-guide/
-
-https://github.com/SimpleHomelab/Docker-Traefik/tree/master
-
-
-# Random 
-# Check out
-https://skaffold.dev/
-
 
 # Git commit comment style
 ## Gitmoji Style
@@ -75,6 +61,8 @@ Common emojis:
     📝 docs: Update installation instructions in README.md
 
     📦️ chore: Upgrade dependencies for build pipeline
+
+    🚀 deploy: Deploying stuff
 ```
 
 ## Complete Docker version
