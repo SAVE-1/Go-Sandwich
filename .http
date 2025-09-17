@@ -12,9 +12,49 @@ Accept-Language: en-US,en;q=0.5
 
 ###
 
+# order multiple sandwiches
+POST http://localhost:80/sandwich
+Content-Type: application/json
+Accept-Language: en-US,en;q=0.5
+
+[
+    {
+        "count": 2,
+        "name": "Test sandwich",
+        "type": 0
+    },
+    {
+        "count": 5,
+        "name": "Test sandwich",
+        "type": 0
+    }
+]
+
+###
+
 # a simple ping
 GET http://localhost:80/ping
 
 ###
 
 GET http://localhost:80/menu
+
+###
+
+# order multiple sandwiches
+POST http://localhost:8086/sandwich
+Content-Type: application/json
+Accept-Language: en-US,en;q=0.5
+
+[
+    {
+        "count": 2,
+        "name": "Test sandwich",
+        "type": 0
+    },
+    {
+        "count": 5,
+        "name": "Test sandwich",
+        "type": 0
+    }
+]
