@@ -12,7 +12,7 @@ import (
 var version = "0.1.8-development"
 
 func main() {
-	fmt.Println("Rabbit consumer version", version)
+	fmt.Println("Rabbit producer version", version)
 	port := os.Getenv("PRODUCER_HOST_PORT")
 	fmt.Println(".env port:", port)
 
