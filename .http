@@ -1,3 +1,5 @@
+
+# order a single sandwich
 POST http://localhost:80/sandwich
 Content-Type: application/json
 Accept-Language: en-US,en;q=0.5
@@ -10,21 +12,9 @@ Accept-Language: en-US,en;q=0.5
 
 ###
 
+# a simple ping
 GET http://localhost:80/ping
 
 ###
 
-
-GET http://localhost:80/api
-
-###
-
 GET http://localhost:80/menu
-
-###
-
-GET http://localhost:8080/keyless-test/get
-Accept: */*
-Accept-Encoding: gzip
-Custom-Header: hello world
-User-Agent: curl/7.64.1
