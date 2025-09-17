@@ -5,26 +5,30 @@ import (
 	"fmt"
 )
 
-// SandWich order creation POST struct
-type SandwichRequest struct {
+type SingularSandwich struct {
 	Count int    `json:"Count" binding:"required"`
 	Name  string `json:"Name" binding:"required"`
 	Type  int    `json:"Type"`
 }
 
-func (s SandwichRequest) GetCount() int {
+// SandWich order creation POST struct
+type SandwichRequest struct {
+	Sandwiches []SingularSandwich
+}
+
+func (s SingularSandwich) GetCount() int {
 	return s.Count
 }
 
-func (s SandwichRequest) GetName() string {
+func (s SingularSandwich) GetName() string {
 	return s.Name
 }
 
-func (s SandwichRequest) GetType() int {
+func (s SingularSandwich) GetType() int {
 	return s.Type
 }
 
-func (s SandwichRequest) ToJson() ([]byte, error) {
+func (s SingularSandwich) ToJson() ([]byte, error) {
 	b, err := json.Marshal(s)
 
 	if err != nil {
@@ -34,13 +38,6 @@ func (s SandwichRequest) ToJson() ([]byte, error) {
 	return b, nil
 }
 
-func (s SandwichRequest) String() string {
-	return fmt.Sprintf("SandwichRequest{Count:%d, Name:%q, Type:%d}", s.Count, s.Name, s.Type)
-}
-
-type ObjectRequest interface {
-	GetCount() int
-	GetName() string
-	GetType() int
-	ToJson() ([]byte, error)
+func (s SingularSandwich) String() string {
+	return fmt.Sprintf("SingularSandwich{Count:%d, Name:%q, Type:%d}", s.Count, s.Name, s.Type)
 }

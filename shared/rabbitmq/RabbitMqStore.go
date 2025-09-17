@@ -2,6 +2,7 @@ package rabbitmq
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"time"
@@ -42,7 +43,8 @@ func NewRabbitMqStore(connectionString string) error {
 	return nil
 }
 
-func (r *RabbitMQStore) MakeASandwichRequest(o ObjectRequest) error {
+// func (r *RabbitMQStore) MakeASandwichRequest(o []ObjectRequest) error {
+func (r *RabbitMQStore) MakeASandwichRequest(sandwich SandwichRequest) error {
 	q, err := r.Channel.QueueDeclare(
 		"supersandwich.sandwich_orders", // name
 		true,                            // durable
@@ -59,10 +61,10 @@ func (r *RabbitMQStore) MakeASandwichRequest(o ObjectRequest) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	json, err := o.ToJson()
+	bodyBytes, err := json.Marshal(sandwich)
 
 	if err != nil {
-		return fmt.Errorf("failed to declare a queue: %w", err)
+		return fmt.Errorf("failed to marshal message: %w", err)
 	}
 
 	err = r.Channel.PublishWithContext(ctx,
@@ -72,14 +74,14 @@ func (r *RabbitMQStore) MakeASandwichRequest(o ObjectRequest) error {
 		false,  // immediate
 		amqp.Publishing{
 			ContentType: "application/json",
-			Body:        json,
+			Body:        bodyBytes,
 		})
 
 	if err != nil {
 		return fmt.Errorf("failed to publish a message: %w", err)
 	}
 
-	log.Printf(" [x] Sent %s\n", string(json))
+	log.Printf(" [x] Sent %s\n", string(bodyBytes))
 
 	return nil
 }

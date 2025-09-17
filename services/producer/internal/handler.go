@@ -20,13 +20,15 @@ import (
 func MakeSandwichOrderPOST(c *gin.Context) {
 	var requestData rabbitmq.SandwichRequest
 
-	if err := c.ShouldBindJSON(&requestData); err != nil {
+	if err := c.ShouldBindJSON(&requestData.Sandwiches); err != nil {
 		c.Error(err)
 		c.AbortWithStatus(http.StatusBadRequest)
 		return
 	}
 
-	fmt.Println(requestData)
+	for _, t := range requestData.Sandwiches {
+		fmt.Println(t)
+	}
 
 	err := rabbitmq.RabbitMQClient.MakeASandwichRequest(requestData)
 
