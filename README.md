@@ -26,6 +26,10 @@ Before you begin, ensure you have the following installed:
 - Go, at least version go1.24.5 windows/amd64
     - Local development, can be run without it
 
+## Taskfile dependencies, for utility
+- https://github.com/AlDanial/cloc
+- Windows netstat
+
 # 🚀 Getting Started
 ## 1. Clone the repository
 ```
