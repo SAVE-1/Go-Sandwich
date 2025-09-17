@@ -14,6 +14,13 @@ Locally, the project can be started with "task up" and shutdown with "task down"
 
 Currently there only exists development versions of the project
 
+# How to set environment variables
+Powershell
+```
+    $env:RABBITMQ_URL="amqp://guest:guest@localhost:5675/"
+    $env:PRODUCER_HOST_PORT="8086"
+```
+
 # Useful URLs
 ## RabbitMQ management console in a docker environment
 http://localhost:15672/#/
