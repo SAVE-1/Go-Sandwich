@@ -1,5 +1,3 @@
-#  https://doc.traefik.io/traefik/v1.4/basics/
-
 services:
   rabbitmq:
     image: "rabbitmq:3-management"
@@ -58,7 +56,6 @@ services:
       - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
       - PRODUCER_HOST_PORT=8083
 
-  # TESTING
   traefik:
     image: "traefik:v3.4"
     container_name: "traefik"
@@ -94,7 +91,6 @@ services:
       - "traefik.http.routers.whoami-api.rule=Host(`whoami.docker.localhost`) && PathPrefix(`/api`)"
       - "traefik.http.routers.whoami-api.entrypoints=web"
 
-# TESTING
   db:
     image: postgres
     container_name: "postgresql-orders"
